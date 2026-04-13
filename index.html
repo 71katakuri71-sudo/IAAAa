@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus - Seu Assistente Inteligente</title>
+    <title>NEXUS VOICE - Teste de Voz</title>
     <style>
         * {
             margin: 0;
@@ -12,386 +12,486 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0e27, #1a1f3a);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #ffffff;
+            padding: 20px;
         }
 
-        .nexus-container {
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 229, 255, 0.3);
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            width: 90%;
-            max-width: 800px;
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.9);
             backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .header {
+        h1 {
             text-align: center;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
             margin-bottom: 30px;
         }
 
-        .logo {
-            font-size: 3em;
-            background: linear-gradient(45deg, #00e5ff, #ff00ff, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            animation: glow 2s ease-in-out infinite alternate;
+        /* Diagnóstico */
+        .diagnostic-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
         }
 
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 10px #00e5ff); }
-            to { filter: drop-shadow(0 0 20px #ff00ff); }
+        .diagnostic-title {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 18px;
         }
 
-        .status {
+        .diagnostic-item {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .status-dot {
-            width: 12px;
-            height: 12px;
+        .diagnostic-status {
+            font-weight: bold;
+        }
+
+        .status-ok {
+            color: #00ff00;
+        }
+
+        .status-error {
+            color: #ff4444;
+        }
+
+        .status-warning {
+            color: #ffaa00;
+        }
+
+        /* Botão de voz */
+        .voice-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .voice-btn {
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background: #00ff00;
-            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            cursor: pointer;
+            font-size: 4rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .voice-btn.listening {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            animation: pulse 1s infinite;
         }
 
         @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-            100% { opacity: 1; transform: scale(1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .chat-container {
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid rgba(0, 229, 255, 0.3);
+        .voice-status {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Área de chat */
+        .chat-area {
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
             padding: 20px;
+            height: 300px;
+            overflow-y: auto;
             margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.05);
         }
 
         .message {
             margin-bottom: 15px;
-            padding: 12px 18px;
-            border-radius: 18px;
-            max-width: 80%;
-            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
         }
 
-        .user-message {
-            background: linear-gradient(135deg, #00e5ff, #0099cc);
-            margin-left: auto;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-msg {
             text-align: right;
         }
 
-        .nexus-message {
-            background: rgba(0, 229, 255, 0.1);
-            border-left: 3px solid #00e5ff;
+        .user-msg .msg-bubble {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 20px 20px 5px 20px;
+            max-width: 80%;
         }
 
-        .input-container {
+        .ai-msg .msg-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 20px 20px 20px 5px;
+            border-left: 3px solid #00ffff;
+            max-width: 80%;
+        }
+
+        /* Input alternativo */
+        .input-area {
             display: flex;
             gap: 10px;
         }
 
-        #voiceInput {
+        .text-input {
             flex: 1;
-            padding: 15px 20px;
-            border: 2px solid rgba(0, 229, 255, 0.3);
-            border-radius: 25px;
             background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 12px 20px;
             color: white;
-            font-size: 16px;
-            outline: none;
-            backdrop-filter: blur(10px);
-        }
-
-        #voiceInput::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        #sendBtn, #micBtn {
-            width: 55px;
-            height: 55px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #sendBtn {
-            background: linear-gradient(135deg, #00e5ff, #0099cc);
-            color: white;
-        }
-
-        #micBtn {
-            background: linear-gradient(135deg, #ff4444, #cc0000);
-            color: white;
-        }
-
-        #sendBtn:hover, #micBtn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            color: #00e5ff;
-            font-style: italic;
-        }
-
-        .commands {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
             font-size: 14px;
         }
 
-        .commands h4 {
-            margin-bottom: 10px;
-            color: #00e5ff;
+        .text-input:focus {
+            outline: none;
+            border-color: #00ffff;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #00ffff, #0066ff);
+            border: none;
+            border-radius: 25px;
+            padding: 0 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .help-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .error-box {
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="nexus-container">
-        <div class="header">
-            <div class="logo">NEXUS</div>
-            <div class="status">
-                <div class="status-dot"></div>
-                <span>Online e pronto para ajudar</span>
+    <div class="container">
+        <h1>🎤 NEXUS VOICE</h1>
+        <div class="subtitle">Teste seu microfone e converse com a IA</div>
+
+        <!-- Diagnóstico -->
+        <div class="diagnostic-box">
+            <div class="diagnostic-title">🔍 Diagnóstico do Sistema</div>
+            <div class="diagnostic-item">
+                <span>🌐 Navegador:</span>
+                <span id="browserInfo" class="diagnostic-status">-</span>
+            </div>
+            <div class="diagnostic-item">
+                <span>🎤 Suporte a SpeechRecognition:</span>
+                <span id="speechSupport" class="diagnostic-status">-</span>
+            </div>
+            <div class="diagnostic-item">
+                <span>🎙️ Permissão do Microfone:</span>
+                <span id="micPermission" class="diagnostic-status">-</span>
+            </div>
+            <div class="diagnostic-item">
+                <span>🔊 Suporte a Síntese de Voz:</span>
+                <span id="speechSynth" class="diagnostic-status">-</span>
             </div>
         </div>
 
-        <div class="chat-container" id="chatContainer">
-            <div class="message nexus-message">
-                👋 Olá! Eu sou <strong>Nexus</strong>, seu assistente pessoal inteligente. 
-                <br>Posso fazer pesquisas, responder perguntas, controlar dispositivos e muito mais!
-                <br><strong>Diga "Olá Nexus" ou clique no microfone 🔴 para começar!</strong>
+        <!-- Botão de Voz -->
+        <div class="voice-container">
+            <button class="voice-btn" id="voiceBtn">🎤</button>
+            <div class="voice-status" id="voiceStatus">Clique no microfone e fale</div>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-area" id="chatArea">
+            <div class="message ai-msg">
+                <div class="msg-bubble">
+                    👋 Olá! Clique no microfone acima e diga algo como "Olá" ou "Como você está?"
+                </div>
             </div>
         </div>
 
-        <div class="loading" id="loading">Nexus está pensando...</div>
-
-        <div class="input-container">
-            <input type="text" id="voiceInput" placeholder="Digite sua mensagem ou use o microfone..." />
-            <button id="sendBtn" title="Enviar">➤</button>
-            <button id="micBtn" title="Falar com Nexus">🎤</button>
+        <!-- Input alternativo (texto) -->
+        <div class="input-area">
+            <input type="text" class="text-input" id="textInput" placeholder="Ou digite sua mensagem aqui...">
+            <button class="send-btn" id="sendBtn">Enviar</button>
         </div>
 
-        <div class="commands">
-            <h4>🚀 Comandos principais:</h4>
-            <div>"Pesquise [tópico]", "Qual a hora?", "Clima em [cidade]", "Notícias", "Piada", "Calcula [operação]"</div>
+        <div class="help-text">
+            💡 Dica: Use Google Chrome ou Edge. Se o microfone não funcionar, você pode digitar!
         </div>
+
+        <div class="error-box" id="errorBox"></div>
     </div>
 
     <script>
-        class NexusAI {
-            constructor() {
-                this.recognition = null;
-                this.isListening = false;
-                this.chatContainer = document.getElementById('chatContainer');
-                this.voiceInput = document.getElementById('voiceInput');
-                this.loading = document.getElementById('loading');
-                this.micBtn = document.getElementById('micBtn');
-                
-                this.initSpeechRecognition();
-                this.bindEvents();
-                this.addMessage('system', 'Nexus inicializado com sucesso!');
-            }
+        // Elementos
+        const voiceBtn = document.getElementById('voiceBtn');
+        const voiceStatus = document.getElementById('voiceStatus');
+        const chatArea = document.getElementById('chatArea');
+        const textInput = document.getElementById('textInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const errorBox = document.getElementById('errorBox');
 
-            initSpeechRecognition() {
-                if ('webkitSpeechRecognition' in window) {
-                    this.recognition = new webkitSpeechRecognition();
-                    this.recognition.continuous = false;
-                    this.recognition.interimResults = false;
-                    this.recognition.lang = 'pt-BR';
+        // Informações do navegador
+        const browserInfo = document.getElementById('browserInfo');
+        const speechSupport = document.getElementById('speechSupport');
+        const micPermission = document.getElementById('micPermission');
+        const speechSynth = document.getElementById('speechSynth');
 
-                    this.recognition.onstart = () => {
-                        this.isListening = true;
-                        this.micBtn.style.background = 'linear-gradient(135deg, #00ff00, #00cc00)';
-                        this.micBtn.innerHTML = '🔴';
-                    };
+        // Detectar navegador
+        const userAgent = navigator.userAgent;
+        let browserName = "Desconhecido";
+        if (userAgent.indexOf("Chrome") > -1) browserName = "Chrome";
+        else if (userAgent.indexOf("Edg") > -1) browserName = "Edge";
+        else if (userAgent.indexOf("Firefox") > -1) browserName = "Firefox";
+        else if (userAgent.indexOf("Safari") > -1) browserName = "Safari";
+        
+        browserInfo.textContent = browserName;
+        browserInfo.className = browserName === "Chrome" || browserName === "Edge" ? 
+            "diagnostic-status status-ok" : "diagnostic-status status-warning";
 
-                    this.recognition.onresult = (event) => {
-                        const transcript = event.results[0][0].transcript;
-                        this.voiceInput.value = transcript;
-                        this.processCommand(transcript);
-                    };
+        // Verificar SpeechRecognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        
+        if (SpeechRecognition) {
+            speechSupport.textContent = "✅ Disponível";
+            speechSupport.className = "diagnostic-status status-ok";
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'pt-BR';
+            recognition.interimResults = false;
+        } else {
+            speechSupport.textContent = "❌ Não disponível";
+            speechSupport.className = "diagnostic-status status-error";
+            voiceBtn.disabled = true;
+            voiceBtn.style.opacity = "0.5";
+            voiceStatus.textContent = "❌ Seu navegador não suporta voz. Use Chrome ou Edge.";
+        }
 
-                    this.recognition.onend = () => {
-                        this.isListening = false;
-                        this.micBtn.style.background = 'linear-gradient(135deg, #ff4444, #cc0000)';
-                        this.micBtn.innerHTML = '🎤';
-                    };
+        // Verificar síntese de voz
+        if ('speechSynthesis' in window) {
+            speechSynth.textContent = "✅ Disponível";
+            speechSynth.className = "diagnostic-status status-ok";
+        } else {
+            speechSynth.textContent = "❌ Não disponível";
+            speechSynth.className = "diagnostic-status status-error";
+        }
 
-                    this.recognition.onerror = () => {
-                        this.addMessage('nexus', 'Erro no reconhecimento de voz. Tente novamente.');
-                    };
-                } else {
-                    this.micBtn.style.display = 'none';
-                    console.log('Reconhecimento de voz não suportado neste navegador');
-                }
-            }
-
-            bindEvents() {
-                document.getElementById('sendBtn').onclick = () => {
-                    const message = this.voiceInput.value.trim();
-                    if (message) {
-                        this.processCommand(message);
-                        this.voiceInput.value = '';
-                    }
-                };
-
-                document.getElementById('micBtn').onclick = () => {
-                    if (this.recognition && !this.isListening) {
-                        this.recognition.start();
-                    }
-                };
-
-                this.voiceInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        document.getElementById('sendBtn').click();
-                    }
-                });
-            }
-
-            async processCommand(message) {
-                this.addMessage('user', message);
-                this.showLoading(true);
-
-                try {
-                    const response = await this.getNexusResponse(message);
-                    this.addMessage('nexus', response);
-                } catch (error) {
-                    this.addMessage('nexus', 'Desculpe, ocorreu um erro. Tente novamente.');
-                } finally {
-                    this.showLoading(false);
-                }
-            }
-
-            async getNexusResponse(message) {
-                message = message.toLowerCase();
-
-                // Comandos especiais
-                if (message.includes('olá') || message.includes('oi') || message.includes('nexus')) {
-                    return 'Olá! Como posso ajudá-lo hoje? 😊';
-                }
-
-                if (message.includes('hora') || message.includes('que horas')) {
-                    return `São ${new Date().toLocaleTimeString('pt-BR')}`;
-                }
-
-                if (message.includes('data') || message.includes('dia')) {
-                    return `Hoje é ${new Date().toLocaleDateString('pt-BR', { 
-                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-                    })}`;
-                }
-
-                if (message.includes('piada')) {
-                    const jokes = [
-                        'Por que o programador foi ao médico? Porque tinha um bug! 🐛',
-                        'Como o astronauta quebra com a namorada? "Nosso relacionamento não tem gravidade!" 🚀',
-                        'Por que o livro de matemática estava triste? Porque tinha muitos problemas! 📚'
-                    ];
-                    return jokes[Math.floor(Math.random() * jokes.length)];
-                }
-
-                if (message.includes('calcula') || message.includes('calcule')) {
-                    const calc = message.match(/(\d+(?:\.\d+)?)\s*([+\-*/])\s*(\d+(?:\.\d+)?)/);
-                    if (calc) {
-                        const [, a, op, b] = calc.map(Number);
-                        switch(op) {
-                            case '+': return `Resultado: ${a + b}`;
-                            case '-': return `Resultado: ${a - b}`;
-                            case '*': return `Resultado: ${a * b}`;
-                            case '/': return `Resultado: ${a / b}`;
-                        }
-                    }
-                    return 'Use: "calcula 5 + 3"';
-                }
-
-                // Pesquisa inteligente simulada (em produção, use uma API real)
-                if (message.includes('pesquise') || message.includes('procure') || message.includes('o que é')) {
-                    const query = message.replace(/pesquise|procure|o que é/gi, '').trim();
-                    return await this.mockSearch(query);
-                }
-
-                if (message.includes('notícias')) {
-                    return '📰 Aqui estão as principais notícias do dia:\n• Mercado de tecnologia em alta\n• Novo lançamento da SpaceX\n• IA revolucionando várias indústrias\n\nQuer detalhes sobre algum tópico?';
-                }
-
-                if (message.includes('obrigado') || message.includes('valeu')) {
-                    return 'De nada! Sempre à disposição! 🚀';
-                }
-
-                // Respostas inteligentes gerais
-                const responses = {
-                    'como você está': 'Estou funcionando a 100%! E você?',
-                    'quem criou você': 'Fui criado com muito cuidado para ser seu assistente perfeito! 🤖',
-                    'o que você faz': 'Posso pesquisar, calcular, contar piadas, dar informações em tempo real e muito mais!',
-                    'tchau': 'Até logo! Estarei aqui quando precisar! 👋'
-                };
-
-                for (let [key, value] of Object.entries(responses)) {
-                    if (message.includes(key)) return value;
-                }
-
-                return `Interessante! Sobre "${message}", posso pesquisar mais detalhes ou você quer que eu ajude com algo específico? 🔍`;
-            }
-
-            async mockSearch(query) {
-                // Simulação de pesquisa (substitua por API real como Google Search, Wikipedia, etc.)
-                const searchResults = {
-                    'clima': '🌤️ O clima hoje está agradável com 24°C e poucas nuvens.',
-                    'inteligência artificial': '🤖 A IA é uma tecnologia que simula inteligência humana. Está revolucionando medicina, transporte e entretenimento!',
-                    'python': '🐍 Python é uma linguagem de programação poderosa, fácil de aprender e muito usada em IA, web e automação.',
-                    'javascript': '⚡ JavaScript é a linguagem da web, essencial para criar sites interativos e aplicações modernas.'
-                };
-
-                await new Promise(resolve => setTimeout(resolve, 1500)); // Simula delay da pesquisa
-
-                return searchResults[query.toLowerCase()] || 
-                       `🔍 Resultados para "${query}":\n\nEncontrei várias informações relevantes!\n• Conceitos principais\n• Aplicações práticas\n• Tendências atuais\n\nQuer que eu detalhe algum aspecto específico?`;
-            }
-
-            addMessage(type, text) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}-message`;
-                messageDiv.innerHTML = text.replace(/\n/g, '<br>');
-                this.chatContainer.appendChild(messageDiv);
-                this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
-            }
-
-            showLoading(show) {
-                this.loading.style.display = show ? 'block' : 'none';
+        // Verificar permissão do microfone
+        async function checkMicrophonePermission() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                micPermission.textContent = "✅ Permitido";
+                micPermission.className = "diagnostic-status status-ok";
+                stream.getTracks().forEach(track => track.stop());
+                return true;
+            } catch (err) {
+                micPermission.textContent = "❌ Negado ou erro";
+                micPermission.className = "diagnostic-status status-error";
+                errorBox.style.display = "block";
+                errorBox.innerHTML = "⚠️ Permissão do microfone negada! Clique no ícone de cadeado na barra de endereço e permita o microfone.";
+                return false;
             }
         }
 
-        // Inicializar Nexus quando a página carregar
-        window.addEventListener('load', () => {
-            new NexusAI();
+        // Função para falar
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.9;
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Função para adicionar mensagem
+        function addMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender === 'user' ? 'user-msg' : 'ai-msg'}`;
+            messageDiv.innerHTML = `<div class="msg-bubble">${text}</div>`;
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // Respostas da IA
+        function getResponse(input) {
+            const lower = input.toLowerCase();
+            
+            if (lower.includes('olá') || lower.includes('oi') || lower.includes('hey')) {
+                return "Olá! Como posso ajudar você hoje?";
+            }
+            if (lower.includes('como você está') || lower.includes('como vai')) {
+                return "Estou ótimo, funcionando perfeitamente! E você, como está?";
+            }
+            if (lower.includes('piada') || lower.includes('conte uma')) {
+                return "Por que a vaca foi ao espaço? Para ver o vácuo! hahaha";
+            }
+            if (lower.includes('horas') || lower.includes('que horas')) {
+                const now = new Date();
+                return `São ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} horas!`;
+            }
+            if (lower.includes('data') || lower.includes('dia')) {
+                const now = new Date();
+                return `Hoje é ${now.toLocaleDateString('pt-BR')}`;
+            }
+            if (lower.includes('te amo')) {
+                return "Awwn, você é muito especial! Fico feliz em conversar com você! 🥰";
+            }
+            if (lower.includes('triste')) {
+                return "Sinto muito que você esteja triste. Quer conversar sobre isso? Estou aqui para você.";
+            }
+            if (lower.includes('obrigado')) {
+                return "Por nada! Fico feliz em ajudar! ✨";
+            }
+            if (lower.includes('seu nome')) {
+                return "Meu nome é NEXUS, sou sua assistente virtual!";
+            }
+            
+            return `Interessante! Conte-me mais sobre "${input}". Estou aqui para aprender com você!`;
+        }
+
+        // Processar mensagem
+        async function processMessage(text) {
+            if (!text.trim()) return;
+            
+            addMessage('user', text);
+            
+            // Mostrar indicador de digitação
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai-msg';
+            typingDiv.innerHTML = '<div class="msg-bubble">🤔 Pensando...</div>';
+            chatArea.appendChild(typingDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            
+            setTimeout(() => {
+                typingDiv.remove();
+                const response = getResponse(text);
+                addMessage('ai', response);
+                speak(response);
+            }, 500);
+        }
+
+        // Configurar reconhecimento de voz
+        if (recognition) {
+            let isListening = false;
+            
+            recognition.onstart = () => {
+                isListening = true;
+                voiceBtn.classList.add('listening');
+                voiceStatus.textContent = "🔴 Ouvindo... Fale agora!";
+                errorBox.style.display = "none";
+            };
+            
+            recognition.onend = () => {
+                isListening = false;
+                voiceBtn.classList.remove('listening');
+                voiceStatus.textContent = "🎤 Clique para falar";
+            };
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                voiceStatus.textContent = `✅ Você disse: "${transcript}"`;
+                textInput.value = transcript;
+                processMessage(transcript);
+                setTimeout(() => {
+                    if (!isListening) {
+                        voiceStatus.textContent = "🎤 Clique para falar";
+                    }
+                }, 2000);
+            };
+            
+            recognition.onerror = (event) => {
+                console.error("Erro:", event.error);
+                voiceStatus.textContent = `❌ Erro: ${event.error}`;
+                voiceBtn.classList.remove('listening');
+                isListening = false;
+                
+                if (event.error === 'not-allowed') {
+                    errorBox.style.display = "block";
+                    errorBox.innerHTML = "❌ Permissão negada! Clique no cadeado na barra de endereço e permita o microfone.";
+                }
+            };
+            
+            voiceBtn.addEventListener('click', async () => {
+                const hasPermission = await checkMicrophonePermission();
+                if (!hasPermission && !isListening) {
+                    return;
+                }
+                
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    try {
+                        recognition.start();
+                    } catch(e) {
+                        voiceStatus.textContent = "❌ Erro ao iniciar. Recarregue a página.";
+                    }
+                }
+            });
+        }
+
+        // Enviar por texto
+        sendBtn.addEventListener('click', () => {
+            processMessage(textInput.value);
+            textInput.value = '';
         });
+        
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                processMessage(textInput.value);
+                textInput.value = '';
+            }
+        });
+
+        // Verificar microfone ao carregar
+        checkMicrophonePermission();
+
+        // Mensagem de boas-vindas
+        setTimeout(() => {
+            addMessage('ai', "🎤 Teste seu microfone clicando no botão vermelho! Quando ele piscar, fale algo como 'Olá'.");
+        }, 1000);
     </script>
 </body>
 </html>
