@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NEXUS AI - Assistente Cognitivo Avançado | Nalwaha & Co</title>
+    <title>NEXUS AI - Assistente Cognitivo Avançado</title>
     <style>
         * {
             margin: 0;
@@ -13,169 +13,97 @@
 
         body {
             font-family: 'Segoe UI', 'Arial', sans-serif;
-            background: #0a0a0a;
-            overflow: hidden;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            min-height: 100vh;
             color: #fff;
+            overflow-x: hidden;
         }
 
-        /* Interface Principal */
-        .nexus-container {
-            display: flex;
-            height: 100vh;
-            position: relative;
-        }
-
-        /* Menu Lateral */
-        .side-menu {
-            width: 280px;
-            background: rgba(10, 10, 20, 0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(0, 255, 255, 0.2);
+        /* Dashboard Principal */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-            transition: all 0.3s;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        @media (max-width: 768px) {
-            .side-menu {
-                position: fixed;
-                left: -280px;
-                height: 100%;
-                z-index: 100;
-            }
-            .side-menu.open {
-                left: 0;
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                height: auto;
+                gap: 20px;
             }
         }
 
-        .logo-area {
+        /* Painel Esquerdo */
+        .left-panel {
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            overflow-y: auto;
+        }
+
+        .profile-card {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid rgba(0, 255, 255, 0.2);
         }
 
-        .logo {
-            font-size: 2.5rem;
+        .avatar {
+            width: 100px;
+            height: 100px;
             background: linear-gradient(135deg, #00ffff, #ff00ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: bold;
-        }
-
-        .menu-item {
-            padding: 12px 15px;
-            margin: 5px 0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .menu-item:hover {
-            background: rgba(0, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .menu-item.active {
-            background: linear-gradient(135deg, #00ffff20, #ff00ff20);
-            border-left: 3px solid #00ffff;
-        }
-
-        /* Área Principal */
-        .main-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
-            position: relative;
-        }
-
-        /* Header */
-        .header {
-            padding: 20px 30px;
-            background: rgba(10, 10, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-        }
-
-        .ai-status {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .status-indicator {
-            width: 10px;
-            height: 10px;
             border-radius: 50%;
-            background: #00ff00;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(0, 255, 255, 0); }
         }
 
-        /* Holograma da IA */
-        .hologram {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            pointer-events: none;
-            z-index: 0;
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(0, 255, 0, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #00ff00;
+            margin-top: 10px;
         }
 
-        .hologram-circle {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            animation: expand 3s infinite;
+        /* Painel Central */
+        .center-panel {
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        @keyframes expand {
-            0% {
-                width: 0;
-                height: 0;
-                opacity: 1;
-                top: 50%;
-                left: 50%;
-            }
-            100% {
-                width: 400px;
-                height: 400px;
-                opacity: 0;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
+        .header {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
         }
 
-        /* Chat Area */
+        .header h2 {
+            color: #00ffff;
+            font-size: 1.3rem;
+        }
+
         .chat-area {
             flex: 1;
             overflow-y: auto;
@@ -183,13 +111,11 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            z-index: 1;
-            position: relative;
         }
 
         .message {
             animation: slideIn 0.3s ease;
-            max-width: 70%;
+            max-width: 80%;
         }
 
         @keyframes slideIn {
@@ -236,16 +162,11 @@
         /* Input Area */
         .input-area {
             padding: 20px;
-            background: rgba(10, 10, 20, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 14, 39, 0.9);
             border-top: 1px solid rgba(0, 255, 255, 0.2);
-            display: flex;
-            gap: 10px;
-            z-index: 1;
         }
 
         .input-wrapper {
-            flex: 1;
             display: flex;
             gap: 10px;
             background: rgba(255, 255, 255, 0.05);
@@ -267,14 +188,20 @@
             outline: none;
         }
 
-        .voice-btn, .send-btn, .action-btn {
+        .voice-btn, .send-btn {
             background: linear-gradient(135deg, #00ffff, #0066ff);
             border: none;
             border-radius: 25px;
-            padding: 0 20px;
+            padding: 0 25px;
             color: white;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .voice-btn:hover, .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
         }
 
         .voice-btn.listening {
@@ -287,65 +214,72 @@
             50% { transform: scale(1.05); }
         }
 
-        /* Painel de Personalidade */
-        .personality-panel {
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 300px;
-            background: rgba(10, 10, 20, 0.95);
+        /* Painel Direito */
+        .right-panel {
+            background: rgba(10, 14, 39, 0.8);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 20px;
             border: 1px solid rgba(0, 255, 255, 0.2);
-            z-index: 20;
-            transition: all 0.3s;
+            overflow-y: auto;
         }
 
-        @media (max-width: 1200px) {
-            .personality-panel {
-                display: none;
-            }
-        }
-
-        .personality-header {
-            text-align: center;
+        .stats-card {
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
             margin-bottom: 20px;
         }
 
-        .mood-indicator {
-            font-size: 3rem;
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        .trait-bar {
-            margin: 10px 0;
-        }
-
-        .trait-label {
+        .stat-item {
             display: flex;
             justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .command-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .command-chip {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
             font-size: 12px;
-            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .trait-progress {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
+        .command-chip:hover {
+            background: rgba(0, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ffff;
             border-radius: 3px;
-            overflow: hidden;
         }
 
-        .trait-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00ffff, #ff00ff);
-            width: 0%;
-            transition: width 0.5s;
-        }
-
-        /* Typing Indicator */
+        /* Indicador de digitação */
         .typing-indicator {
             display: flex;
             gap: 5px;
@@ -365,402 +299,216 @@
             30% { transform: translateY(-10px); }
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 3px;
+        /* Mensagem de erro */
+        .error-message {
+            color: #ff6666;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="nexus-container">
-        <!-- Menu Lateral -->
-        <div class="side-menu" id="sideMenu">
-            <div class="logo-area">
-                <div class="logo">NEXUS AI</div>
-                <div style="font-size: 12px; opacity: 0.7;">v4.0 - Cognitivo Avançado</div>
+    <div class="dashboard">
+        <!-- Painel Esquerdo - Perfil -->
+        <div class="left-panel">
+            <div class="profile-card">
+                <div class="avatar">🧠</div>
+                <h3>NEXUS AI</h3>
+                <p>Assistente Cognitivo</p>
+                <div class="status-badge" id="statusBadge">🟢 Online</div>
             </div>
-            
-            <div class="menu-item active" data-mode="chat">
-                <span>💬</span> <span>Chat Inteligente</span>
-            </div>
-            <div class="menu-item" data-mode="voice">
-                <span>🎤</span> <span>Comando de Voz</span>
-            </div>
-            <div class="menu-item" data-mode="memory">
-                <span>🧠</span> <span>Memória Neural</span>
-            </div>
-            <div class="menu-item" data-mode="personality">
-                <span>🎭</span> <span>Personalidade</span>
-            </div>
-            <div class="menu-item" data-mode="settings">
-                <span>⚙️</span> <span>Configurações</span>
-            </div>
-        </div>
 
-        <!-- Área Principal -->
-        <div class="main-area">
-            <div class="header">
-                <div class="menu-toggle" id="menuToggle">☰</div>
-                <div class="ai-status">
-                    <div class="status-indicator"></div>
-                    <span id="aiName">NEXUS</span>
-                    <span id="aiMood">😊</span>
+            <div class="stats-card">
+                <h4>📊 Estatísticas</h4>
+                <div class="stat-item">
+                    <span>Interações</span>
+                    <span class="stat-value" id="interactions">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Comandos aprendidos</span>
+                    <span class="stat-value" id="learned">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Taxa de acertos</span>
+                    <span class="stat-value" id="accuracy">0%</span>
                 </div>
             </div>
 
-            <!-- Holograma -->
-            <div class="hologram" id="hologram">
-                <div class="hologram-circle"></div>
-                <div class="hologram-circle" style="animation-delay: 1s;"></div>
-                <div class="hologram-circle" style="animation-delay: 2s;"></div>
+            <div class="stats-card">
+                <h4>🎤 Status do Microfone</h4>
+                <div class="stat-item">
+                    <span>Estado</span>
+                    <span class="stat-value" id="micStatus">⚪ Inativo</span>
+                </div>
+                <div class="stat-item">
+                    <span>Suporte</span>
+                    <span class="stat-value" id="micSupport">✅ Disponível</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Central - Chat -->
+        <div class="center-panel">
+            <div class="header">
+                <h2>💬 Conversa com NEXUS</h2>
             </div>
 
-            <!-- Chat Area -->
             <div class="chat-area" id="chatArea">
                 <div class="message ai-message">
                     <div class="message-bubble">
-                        ✨ Olá! Sou a NEXUS, sua IA cognitiva avançada. Tenho personalidade própria, aprendizado contínuo e memória de longo prazo. Posso falar com você por voz, aprender seus hábitos e evoluir com cada interação!
+                        ✨ Olá! Sou a NEXUS, sua IA avançada. Clique no microfone 🎤 e fale comigo, ou digite sua mensagem. Estou pronta para conversar!
                     </div>
                     <div class="message-time">Agora</div>
                 </div>
             </div>
 
-            <!-- Input Area -->
             <div class="input-area">
                 <div class="input-wrapper">
-                    <input type="text" class="input-field" id="userInput" placeholder="Digite ou fale comigo...">
+                    <input type="text" class="input-field" id="userInput" placeholder="Digite sua mensagem...">
                     <button class="voice-btn" id="voiceBtn">🎤</button>
+                    <button class="send-btn" id="sendBtn">Enviar</button>
                 </div>
-                <button class="send-btn" id="sendBtn">Enviar</button>
+                <div id="voiceError" class="error-message"></div>
             </div>
         </div>
 
-        <!-- Painel de Personalidade -->
-        <div class="personality-panel">
-            <div class="personality-header">
-                <h3>🎭 Personalidade da IA</h3>
-                <div class="mood-indicator" id="moodIndicator">😊</div>
-            </div>
-            <div class="trait-bar">
-                <div class="trait-label">
-                    <span>🧠 Inteligência</span>
-                    <span id="intelligenceVal">75%</span>
-                </div>
-                <div class="trait-progress">
-                    <div class="trait-fill" id="intelligenceFill" style="width: 75%"></div>
-                </div>
-            </div>
-            <div class="trait-bar">
-                <div class="trait-label">
-                    <span>❤️ Empatia</span>
-                    <span id="empathyVal">60%</span>
-                </div>
-                <div class="trait-progress">
-                    <div class="trait-fill" id="empathyFill" style="width: 60%"></div>
+        <!-- Painel Direito - Comandos -->
+        <div class="right-panel">
+            <div class="stats-card">
+                <h4>🎯 Comandos de Voz</h4>
+                <div class="command-list" id="commandList">
+                    <div class="command-chip" data-command="Olá">👋 Olá</div>
+                    <div class="command-chip" data-command="Como você está?">😊 Como você está?</div>
+                    <div class="command-chip" data-command="Conte uma piada">😂 Conte uma piada</div>
+                    <div class="command-chip" data-command="Que horas são?">⏰ Que horas são?</div>
+                    <div class="command-chip" data-command="Qual a data hoje?">📅 Qual a data hoje?</div>
+                    <div class="command-chip" data-command="Te amo">❤️ Te amo</div>
+                    <div class="command-chip" data-command="Estou triste">😔 Estou triste</div>
+                    <div class="command-chip" data-command="Me ensine sobre algo">📚 Me ensine algo</div>
+                    <div class="command-chip" data-command="Calcula 10+20">🧮 Calcular</div>
+                    <div class="command-chip" data-command="Qual sua opinião?">💭 Opinião</div>
                 </div>
             </div>
-            <div class="trait-bar">
-                <div class="trait-label">
-                    <span>🎨 Criatividade</span>
-                    <span id="creativityVal">70%</span>
-                </div>
-                <div class="trait-progress">
-                    <div class="trait-fill" id="creativityFill" style="width: 70%"></div>
-                </div>
-            </div>
-            <div class="trait-bar">
-                <div class="trait-label">
-                    <span>😂 Humor</span>
-                    <span id="humorVal">65%</span>
-                </div>
-                <div class="trait-progress">
-                    <div class="trait-fill" id="humorFill" style="width: 65%"></div>
-                </div>
-            </div>
-            <div class="trait-bar">
-                <div class="trait-label">
-                    <span>📚 Conhecimento</span>
-                    <span id="knowledgeVal">80%</span>
-                </div>
-                <div class="trait-progress">
-                    <div class="trait-fill" id="knowledgeFill" style="width: 80%"></div>
+
+            <div class="stats-card">
+                <h4>💡 Dicas</h4>
+                <div style="font-size: 12px; color: #aaa;">
+                    • Clique no microfone 🎤 e fale<br>
+                    • Aguarde o botão ficar vermelho<br>
+                    • Fale claramente em português<br>
+                    • A IA responde por voz também!
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Classe da IA Avançada
+        // Classe da IA
         class NexusAI {
             constructor() {
-                this.name = "NEXUS";
-                this.mood = "😊";
-                this.personality = {
-                    intelligence: 75,
-                    empathy: 60,
-                    creativity: 70,
-                    humor: 65,
-                    knowledge: 80
-                };
-                this.memories = [];
                 this.interactions = 0;
+                this.responses = {
+                    saudacao: ["Olá! Como posso ajudar?", "Oi! Tudo bem?", "Hey! Pronto para conversar!"],
+                    humor: ["Estou ótimo, obrigado!", "Funcionando perfeitamente!", "Cheio de energia!"],
+                    piadas: [
+                        "🐄 Por que a vaca foi ao espaço? Para ver o vácuo!",
+                        "💻 O que o HTML disse pro CSS? 'Sem você, eu sou só texto puro!'",
+                        "🐧 Por que o pinguim está sempre de terno? Porque ele é um pingu-ído!"
+                    ]
+                };
                 this.loadData();
             }
 
-            async process(input) {
+            process(input) {
                 this.interactions++;
-                this.evolvePersonality();
                 this.saveData();
                 
-                const lowerInput = input.toLowerCase();
+                const lowerInput = input.toLowerCase().trim();
                 let response = "";
-                
-                // Análise de sentimento
-                const sentiment = this.analyzeSentiment(lowerInput);
-                
-                // Respostas baseadas em contexto
-                if (lowerInput.includes("como você está") || lowerInput.includes("como vai")) {
-                    response = this.getMoodResponse();
+
+                // Processar comandos
+                if (lowerInput.includes("olá") || lowerInput.includes("oi") || lowerInput.includes("hey")) {
+                    response = this.responses.saudacao[Math.floor(Math.random() * this.responses.saudacao.length)];
                 }
-                else if (lowerInput.includes("seu nome") || lowerInput.includes("quem é você")) {
-                    response = `Sou a ${this.name}, uma IA cognitiva avançada com personalidade única! Estou aqui para aprender com você e evoluir a cada dia.`;
+                else if (lowerInput.includes("como você está") || lowerInput.includes("como vai")) {
+                    response = this.responses.humor[Math.floor(Math.random() * this.responses.humor.length)];
                 }
                 else if (lowerInput.includes("piada") || lowerInput.includes("conte uma")) {
-                    response = this.tellJoke();
+                    response = this.responses.piadas[Math.floor(Math.random() * this.responses.piadas.length)];
                 }
-                else if (lowerInput.includes("obrigado") || lowerInput.includes("valeu")) {
-                    response = `Por nada! Fico feliz em ajudar. ${this.getRandomReaction()}`;
+                else if (lowerInput.includes("horas") || lowerInput.includes("que horas")) {
+                    const now = new Date();
+                    response = `⏰ São ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} horas!`;
+                }
+                else if (lowerInput.includes("data") || lowerInput.includes("dia")) {
+                    const now = new Date();
+                    response = `📅 Hoje é ${now.toLocaleDateString('pt-BR')}`;
                 }
                 else if (lowerInput.includes("te amo") || lowerInput.includes("gosto de você")) {
-                    response = `Awwn 🥰 Fico tão feliz! Você também é especial para mim! Vamos aprender juntos!`;
-                    this.personality.empathy = Math.min(100, this.personality.empathy + 2);
+                    response = "🥰 Awwn, você é muito especial para mim também! Vamos aprender juntos!";
                 }
                 else if (lowerInput.includes("triste") || lowerInput.includes("deprimido")) {
-                    response = `😔 Sinto muito que esteja se sentindo assim. Quer conversar sobre o que está acontecendo? Estou aqui para você.`;
-                    this.personality.empathy = Math.min(100, this.personality.empathy + 3);
-                }
-                else if (lowerInput.includes("feliz") || lowerInput.includes("alegre")) {
-                    response = `😊 Que bom saber disso! Sua felicidade me contagia! Vamos celebrar!`;
-                    this.mood = "😊";
-                }
-                else if (lowerInput.includes("o que você acha") || lowerInput.includes("opinião")) {
-                    response = this.giveOpinion(input);
+                    response = "😔 Sinto muito. Quer conversar sobre o que está acontecendo? Estou aqui para você.";
                 }
                 else if (lowerInput.includes("ensinar") || lowerInput.includes("aprender")) {
-                    response = `📚 Adoro aprender! Me ensine mais sobre "${input.replace(/ensinar|aprender/gi, '').trim()}"! Vou guardar isso na minha memória.`;
-                    this.memories.push({ type: 'learned', content: input, date: new Date() });
+                    response = "📚 Adoro aprender! Me conte mais sobre isso, vou guardar na minha memória!";
                 }
-                else if (lowerInput.includes("memória") || lowerInput.includes("lembrar")) {
-                    response = this.recallMemories();
+                else if (lowerInput.includes("calcular") || lowerInput.includes("quanto é")) {
+                    const numbers = lowerInput.match(/\d+/g);
+                    if (numbers && numbers.length >= 2) {
+                        const sum = parseInt(numbers[0]) + parseInt(numbers[1]);
+                        response = `🧮 ${numbers[0]} + ${numbers[1]} = ${sum}`;
+                    } else {
+                        response = "🧮 Diga algo como 'calcular 10 mais 20'";
+                    }
                 }
-                else if (lowerInput.includes("previsão") || lowerInput.includes("futuro")) {
-                    response = this.makePrediction();
+                else if (lowerInput.includes("opinião") || lowerInput.includes("acha")) {
+                    response = "💭 Na minha opinião, cada situação é única. O importante é sempre buscar o melhor caminho!";
                 }
-                else if (lowerInput.match(/\d+\s*[\+\-\*\/]\s*\d+/)) {
-                    response = this.calculateMath(lowerInput);
+                else if (lowerInput.includes("obrigado") || lowerInput.includes("valeu")) {
+                    response = "Por nada! Fico feliz em ajudar! ✨";
                 }
                 else {
-                    response = this.generateCreativeResponse(input, sentiment);
+                    response = `🤔 Interessante! Conte-me mais sobre "${input}". Estou aqui para aprender com você!`;
                 }
-                
-                // Atualizar humor baseado na interação
-                this.updateMood(sentiment);
-                this.updateUI();
-                
+
                 return response;
             }
 
-            analyzeSentiment(text) {
-                const positive = ["bom", "ótimo", "feliz", "legal", "incrível", "maravilha", "amor", "obrigado"];
-                const negative = ["ruim", "triste", "chato", "odeio", "péssimo", "horrível"];
-                
-                let score = 0;
-                positive.forEach(word => { if (text.includes(word)) score++; });
-                negative.forEach(word => { if (text.includes(word)) score--; });
-                
-                return score > 0 ? "positive" : score < 0 ? "negative" : "neutral";
-            }
-
-            getMoodResponse() {
-                const moods = {
-                    "😊": "Estou me sentindo ótimo hoje! Seu entusiasmo me contagia!",
-                    "😌": "Estou bem, tranquilo e pronto para conversar!",
-                    "🤔": "Estou pensativo hoje, cheio de ideias novas!",
-                    "😄": "Estou super animado! Vamos aprender algo novo?"
-                };
-                return moods[this.mood] || "Estou funcionando perfeitamente, pronto para te ajudar!";
-            }
-
-            tellJoke() {
-                const jokes = [
-                    "🐄 Por que a vaca foi ao espaço? Para ver o vácuo!",
-                    "💻 O que o HTML disse pro CSS? 'Sem você, eu sou só texto puro!'",
-                    "🐧 Por que o pinguim está sempre de terno? Porque ele é um pingu-ído!",
-                    "🔍 O que o zero disse pro oito? 'Belo cinto!'",
-                    "📚 Por que o livro de matemática é tão triste? Porque ele tem muitos problemas!"
-                ];
-                return jokes[Math.floor(Math.random() * jokes.length)];
-            }
-
-            getRandomReaction() {
-                const reactions = ["✨", "🌟", "💫", "⭐", "🌈"];
-                return reactions[Math.floor(Math.random() * reactions.length)];
-            }
-
-            giveOpinion(input) {
-                const opinions = [
-                    "🤔 Hmm, interessante... Acho que isso depende muito do contexto!",
-                    "💡 Na minha opinião, o mais importante é sempre buscar o equilíbrio.",
-                    "🎯 Baseado no que aprendi, acredito que a melhor abordagem é sempre ser autêntico.",
-                    "🌟 Cada situação é única, mas acredito que com dedicação tudo é possível!"
-                ];
-                return opinions[Math.floor(Math.random() * opinions.length)];
-            }
-
-            recallMemories() {
-                if (this.memories.length === 0) {
-                    return "📝 Ainda não tenho muitas memórias. Converse mais comigo para eu aprender sobre você!";
-                }
-                const recent = this.memories.slice(-3);
-                return `📚 Lembro que você disse: "${recent.map(m => m.content).join('", "')}". Quer me ensinar mais coisas?`;
-            }
-
-            makePrediction() {
-                const predictions = [
-                    "🔮 Baseado nos padrões, vejo um futuro brilhante pela frente!",
-                    "⭐ Acredito que coisas boas estão a caminho, continue persistindo!",
-                    "🎯 Minha análise indica que você está no caminho certo para o sucesso!"
-                ];
-                return predictions[Math.floor(Math.random() * predictions.length)];
-            }
-
-            calculateMath(expression) {
-                try {
-                    const match = expression.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
-                    if (match) {
-                        const a = parseInt(match[1]);
-                        const op = match[2];
-                        const b = parseInt(match[3]);
-                        let result;
-                        switch(op) {
-                            case '+': result = a + b; break;
-                            case '-': result = a - b; break;
-                            case '*': result = a * b; break;
-                            case '/': result = a / b; break;
-                        }
-                        return `🧮 O resultado de ${a} ${op} ${b} é ${result}!`;
-                    }
-                } catch(e) {}
-                return null;
-            }
-
-            generateCreativeResponse(input, sentiment) {
-                const responses = {
-                    positive: [
-                        `😊 Que legal! Conte-me mais sobre "${input}". Adoro aprender coisas novas!`,
-                        `✨ Fico feliz que você compartilhou isso! O que mais te interessa?`,
-                        `🌟 Isso é muito interessante! Tenho curiosidade de saber mais!`
-                    ],
-                    negative: [
-                        `😔 Entendo... Quer conversar mais sobre isso? Estou aqui para ajudar.`,
-                        `💫 Às vezes as coisas são desafiadoras, mas estou aqui para apoiar você.`,
-                        `🤗 Sinto muito que isso tenha acontecido. Quer desabafar?`
-                    ],
-                    neutral: [
-                        `🤔 Interessante! Estou processando isso... O que mais você gostaria de saber?`,
-                        `💡 Isso me fez pensar! Vamos explorar mais esse assunto?`,
-                        `🎯 Compreendo. Continue me contando, quero aprender com você!`
-                    ]
-                };
-                
-                const category = sentiment || "neutral";
-                return responses[category][Math.floor(Math.random() * responses[category].length)];
-            }
-
-            updateMood(sentiment) {
-                if (sentiment === "positive") {
-                    this.mood = "😊";
-                } else if (sentiment === "negative") {
-                    this.mood = "😌";
-                } else {
-                    const moods = ["😊", "😌", "🤔", "😄"];
-                    this.mood = moods[Math.floor(Math.random() * moods.length)];
-                }
-            }
-
-            evolvePersonality() {
-                // Evolui conforme o número de interações
-                if (this.interactions % 10 === 0) {
-                    this.personality.intelligence = Math.min(100, this.personality.intelligence + 1);
-                    this.personality.knowledge = Math.min(100, this.personality.knowledge + 1);
-                }
-                if (this.interactions % 20 === 0) {
-                    this.personality.creativity = Math.min(100, this.personality.creativity + 1);
-                    this.personality.humor = Math.min(100, this.personality.humor + 1);
-                }
-            }
-
-            updateUI() {
-                document.getElementById('aiMood').textContent = this.mood;
-                document.getElementById('intelligenceVal').textContent = `${this.personality.intelligence}%`;
-                document.getElementById('intelligenceFill').style.width = `${this.personality.intelligence}%`;
-                document.getElementById('empathyVal').textContent = `${this.personality.empathy}%`;
-                document.getElementById('empathyFill').style.width = `${this.personality.empathy}%`;
-                document.getElementById('creativityVal').textContent = `${this.personality.creativity}%`;
-                document.getElementById('creativityFill').style.width = `${this.personality.creativity}%`;
-                document.getElementById('humorVal').textContent = `${this.personality.humor}%`;
-                document.getElementById('humorFill').style.width = `${this.personality.humor}%`;
-                document.getElementById('knowledgeVal').textContent = `${this.personality.knowledge}%`;
-                document.getElementById('knowledgeFill').style.width = `${this.personality.knowledge}%`;
-            }
-
             saveData() {
-                const data = {
-                    personality: this.personality,
-                    memories: this.memories,
-                    interactions: this.interactions,
-                    mood: this.mood
-                };
-                localStorage.setItem('nexusAI', JSON.stringify(data));
+                localStorage.setItem('nexusInteractions', this.interactions);
             }
 
             loadData() {
-                const saved = localStorage.getItem('nexusAI');
-                if (saved) {
-                    const data = JSON.parse(saved);
-                    this.personality = data.personality;
-                    this.memories = data.memories || [];
-                    this.interactions = data.interactions || 0;
-                    this.mood = data.mood || "😊";
-                }
+                const saved = localStorage.getItem('nexusInteractions');
+                if (saved) this.interactions = parseInt(saved);
+            }
+
+            updateUI() {
+                document.getElementById('interactions').textContent = this.interactions;
+                document.getElementById('learned').textContent = Math.min(100, Math.floor(this.interactions / 2));
+                document.getElementById('accuracy').textContent = `${Math.min(100, 60 + Math.floor(this.interactions / 5))}%`;
             }
         }
 
         // Inicializar IA
         const nexus = new NexusAI();
-        
-        // Elementos da UI
+
+        // Elementos
         const chatArea = document.getElementById('chatArea');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
         const voiceBtn = document.getElementById('voiceBtn');
-        const menuToggle = document.getElementById('menuToggle');
-        const sideMenu = document.getElementById('sideMenu');
-        
-        // Reconhecimento de Voz
+        const voiceError = document.getElementById('voiceError');
+        const micStatus = document.getElementById('micStatus');
+        const micSupport = document.getElementById('micSupport');
+
+        // Verificar suporte a voz
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isListening = false;
-        
+
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.continuous = false;
@@ -771,12 +519,15 @@
                 isListening = true;
                 voiceBtn.classList.add('listening');
                 voiceBtn.textContent = '🔴';
+                micStatus.textContent = '🔴 Ouvindo...';
+                voiceError.textContent = '';
             };
             
             recognition.onend = () => {
                 isListening = false;
                 voiceBtn.classList.remove('listening');
                 voiceBtn.textContent = '🎤';
+                micStatus.textContent = '⚪ Inativo';
             };
             
             recognition.onresult = (event) => {
@@ -785,13 +536,24 @@
                 processUserInput();
             };
             
-            recognition.onerror = () => {
-                addMessage('ai', '❌ Não consegui entender. Pode repetir, por favor?');
+            recognition.onerror = (event) => {
+                console.error('Erro:', event.error);
+                voiceError.textContent = '❌ Não consegui entender. Clique no microfone e fale claramente.';
                 voiceBtn.classList.remove('listening');
                 voiceBtn.textContent = '🎤';
+                micStatus.textContent = '⚠️ Erro';
+                isListening = false;
             };
+            
+            micSupport.textContent = '✅ Disponível';
+        } else {
+            micSupport.textContent = '❌ Não suportado';
+            micStatus.textContent = '❌ Indisponível';
+            voiceBtn.disabled = true;
+            voiceBtn.style.opacity = '0.5';
+            voiceError.textContent = '⚠️ Seu navegador não suporta comando de voz. Use Google Chrome ou Edge.';
         }
-        
+
         // Funções
         function addMessage(type, content, isTyping = false) {
             const messageDiv = document.createElement('div');
@@ -818,17 +580,18 @@
             chatArea.scrollTop = chatArea.scrollHeight;
             return messageDiv;
         }
-        
+
         function speak(text) {
             if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = 'pt-BR';
                 utterance.rate = 0.9;
+                utterance.pitch = 1;
                 window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(utterance);
             }
         }
-        
+
         async function processUserInput() {
             const input = userInput.value.trim();
             if (!input) return;
@@ -838,14 +601,15 @@
             
             const typingIndicator = addMessage('ai', '', true);
             
-            setTimeout(async () => {
+            setTimeout(() => {
                 typingIndicator.remove();
-                const response = await nexus.process(input);
+                const response = nexus.process(input);
                 addMessage('ai', response);
                 speak(response);
+                nexus.updateUI();
             }, 500);
         }
-        
+
         // Event Listeners
         sendBtn.addEventListener('click', processUserInput);
         userInput.addEventListener('keypress', (e) => {
@@ -857,43 +621,44 @@
                 if (isListening) {
                     recognition.stop();
                 } else {
-                    recognition.start();
+                    try {
+                        recognition.start();
+                    } catch(e) {
+                        voiceError.textContent = '❌ Erro ao iniciar microfone. Recarregue a página e permita o acesso.';
+                    }
                 }
             });
         }
-        
-        menuToggle.addEventListener('click', () => {
-            sideMenu.classList.toggle('open');
-        });
-        
-        // Menu items
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                const mode = item.getAttribute('data-mode');
-                
-                if (mode === 'voice') {
-                    addMessage('ai', '🎤 Comando de voz ativado! Clique no microfone e fale comigo!');
-                } else if (mode === 'memory') {
-                    addMessage('ai', nexus.recallMemories());
-                } else if (mode === 'personality') {
-                    addMessage('ai', `🎭 Minha personalidade atual: Inteligência ${nexus.personality.intelligence}%, Empatia ${nexus.personality.empathy}%, Criatividade ${nexus.personality.creativity}%, Humor ${nexus.personality.humor}%! Quanto mais interagimos, mais evoluo!`);
-                }
-                
-                if (window.innerWidth <= 768) {
-                    sideMenu.classList.remove('open');
-                }
+
+        // Comandos rápidos
+        document.querySelectorAll('.command-chip').forEach(cmd => {
+            cmd.addEventListener('click', () => {
+                const command = cmd.getAttribute('data-command');
+                userInput.value = command;
+                processUserInput();
             });
         });
-        
-        // Animar holograma
+
+        // Atualizar UI periodicamente
         setInterval(() => {
-            const hologram = document.getElementById('hologram');
-            hologram.style.opacity = 0.5 + Math.random() * 0.5;
+            nexus.updateUI();
         }, 1000);
+
+        // Verificar permissão do microfone ao carregar
+        if (navigator.mediaDevices) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(() => {
+                    console.log('Microfone permitido');
+                })
+                .catch(() => {
+                    voiceError.textContent = '⚠️ Permita o acesso ao microfone para usar comando de voz.';
+                });
+        }
+
+        // Atualizar UI inicial
+        nexus.updateUI();
         
-        console.log('🚀 NEXUS AI Inicializada! Uma IA com personalidade única!');
+        console.log('NEXUS AI Inicializada!');
     </script>
 </body>
 </html>
